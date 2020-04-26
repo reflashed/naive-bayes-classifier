@@ -13,9 +13,7 @@ DATA_DIR = os.path.join(CURR_DIR, 'data')
 data = get_data(DATA_DIR)
 training_set, testing_set = split_data(data, .75)
 
-# print(count_words(training_set))
-
-classifier = NaiveBayesClassifier(k=.0005)
+classifier = NaiveBayesClassifier(k=5*10**-10)
 classifier.train(training_set)
 cars = classifier.word_probs[:10]
 
@@ -27,3 +25,19 @@ print('--------------------------------')
 
 for x in counts:
     print(x, counts[x])
+
+tp = counts[(True, True)]
+fp = counts[(True, False)]
+tn = counts[(False, False)]
+fn = counts[(False, True)]
+
+sensitivity = round(tp / (tp + fn) * 100, 2)
+specificity = round(tn / (tn + fp) * 100, 2)
+ppp = round(tp / (tp + fp) * 100, 2)
+npv = round(tn / (tn + fn) * 100, 2)
+
+print('')
+print('Sensitivity:', str(sensitivity) + '%')
+print('Specificity:', str(specificity) + '%')
+print('PPP:', str(ppp) + '%')
+print('NPV:', str(npv) + '%')
